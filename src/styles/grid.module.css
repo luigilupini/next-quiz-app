@@ -1,0 +1,98 @@
+/* Grid container styles */
+.plain,
+.basic,
+.aside,
+.balanced,
+.editor {
+  display: grid;
+  gap: 0px;
+  padding: 0px;
+  height: 100vh;
+}
+
+/* Grid item styles */
+.plain {
+  grid-template-columns: 1fr;
+  grid-template-rows: 48px 1fr 36px;
+  grid-template-areas:
+    "header"
+    "body "
+    "footer";
+}
+
+.basic {
+  grid-template-columns: minmax(190px, 280px) 1fr 1fr;
+  grid-template-rows: 48px 1fr 36px;
+  grid-template-areas:
+    "start header header"
+    "body body body"
+    "footer footer footer";
+}
+
+.aside {
+  grid-template-columns: minmax(190px, 280px) 1fr;
+  grid-template-rows: 48px 1fr 36px;
+  grid-template-areas:
+    "start header"
+    "aside body"
+    "aside footer";
+}
+
+.balanced {
+  grid-template-columns: minmax(100px, 190px) 1fr minmax(100px, 190px);
+  grid-template-rows: 48px 1fr 36px;
+  grid-template-areas:
+    "aside header end"
+    "aside body end"
+    "aside footer end";
+}
+
+.editor {
+  grid-template-columns: minmax(48px, auto) 1fr;
+  grid-template-rows: 48px 1fr;
+  grid-template-areas:
+    "header header"
+    "aside body";
+}
+
+/* Area-specific styles */
+.plain_header,
+.basic_header,
+.aside_header,
+.balanced_header,
+.editor_header {
+  grid-area: header;
+}
+
+.basic_body,
+.aside_body,
+.balanced_body,
+.editor_body {
+  grid-area: body;
+}
+
+.plain_body {
+  padding: 1rem;
+}
+
+.plain_footer,
+.basic_footer,
+.aside_footer,
+.balanced_footer {
+  grid-area: footer;
+}
+
+.aside_aside,
+.balanced_aside,
+.editor_aside {
+  grid-area: aside;
+}
+
+.balanced_end {
+  grid-area: end;
+}
+
+.basic_start,
+.aside_start {
+  grid-area: start;
+}
