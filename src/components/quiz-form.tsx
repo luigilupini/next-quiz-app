@@ -9,8 +9,8 @@ import Message from "./message"
 import { Button } from "./ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card"
 import { Slider } from "./ui/slider"
-import FieldWrapper from "./wrapper/field"
 import SelectWrapper from "./wrapper/select"
+import FieldWrapper from "./wrapper/slider"
 
 type Props = {
   results: QuizResult[]
