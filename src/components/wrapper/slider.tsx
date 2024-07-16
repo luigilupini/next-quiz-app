@@ -1,4 +1,4 @@
-import { Slider } from "../ui/slider"
+import { Slider } from "@/components/ui/slider"
 
 type Props = {
   label: string
