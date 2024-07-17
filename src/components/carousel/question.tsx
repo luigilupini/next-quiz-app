@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge"
 import { CheckboxGroupWrapper } from "@/components/wrapper/checkbox"
 import RadioGroupWrapper from "@/components/wrapper/radio"
 import { PropsWithChildren } from "react"
@@ -62,22 +61,6 @@ export function MultipleChoice({
   )
 }
 
-type ReviewProps = {
-  question: string
-  userAnswer: string[]
-  correctAnswer: string[]
-}
-
-export function Review({ question, userAnswer, correctAnswer }: ReviewProps) {
-  const displayUserAnswer = userAnswer.join(", ")
-  return (
-    <div className="ping">
-      <h2>{question}</h2>
-      <p>Your answer: {displayUserAnswer}</p>
-    </div>
-  )
-}
-
 type ContainerProps = PropsWithChildren<{
   currentQuestion: number
   question: string
@@ -86,12 +69,10 @@ type ContainerProps = PropsWithChildren<{
 const Container = ({ currentQuestion, question, children }: ContainerProps) => {
   return (
     <div className="relative flex flex-col gap-3">
-      <header>
-        <Badge className="center mr-2 size-6 rounded-full">
-          {currentQuestion}
-        </Badge>
-        <span className="font-medium">{question}</span>
+      <header className="center justify-start gap-2">
+        <span className="text-lg font-medium">Question {currentQuestion}</span>
       </header>
+      <h1>{question}</h1>
       <div className="center flex-col items-start gap-2">{children}</div>
     </div>
   )

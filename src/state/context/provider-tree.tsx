@@ -1,5 +1,6 @@
 "use client"
 
+import { Toaster } from "@/components/ui/toaster"
 import ThemeProvider from "@/state/context/leaf/theme"
 import { PropsWithChildren } from "react"
 
@@ -12,6 +13,7 @@ export default function ProviderTree({ children }: PropsWithChildren) {
       disableTransitionOnChange
     >
       {children}
+      <Toaster />
     </ThemeProvider>
   )
 }

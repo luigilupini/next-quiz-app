@@ -1,83 +1,69 @@
 "use client"
 
-import { Category, Controls, QuizResult } from "@/lib/definitions"
+import { Category } from "@/lib/definitions"
 import { Settings } from "lucide-react"
-import { useState } from "react"
+import { useRef } from "react"
 
+import Icon from "@/components/icon"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import Icon from "../icon"
+import { useToast } from "@/components/ui/use-toast"
+
+import { createQuiz } from "@/server/api"
+import useQuizStore from "@/state/zustand/quiz-store"
+
+import { playAudio } from "@/lib/utils"
 import Body from "./body"
 import Footer from "./footer"
 import Header from "./header"
 
 type Props = {
-  results: QuizResult[]
   categories: Category[]
-  controls?: Controls
 }
 
-const defaultControls = {
-  amount: "10",
-  category: "1",
-  difficulty: "easy",
-  type: "multiple",
-}
+export default function ConfigSheet({ categories }: Props) {
+  const { toast } = useToast()
 
-export default function ConfigSheet({
-  results,
-  categories,
-  controls = defaultControls,
-}: Props) {
-  const [settings, setSettings] = useState({
-    amount: controls.amount,
-    category: controls.category,
-    difficulty: controls.difficulty,
-    type: controls.type,
-  })
+  const ref = useRef<HTMLFormElement>(null)
 
-  const handleValueChange = (field: string) => (value: string) => {
-    setSettings((prev) => ({
-      ...prev,
-      [field]: value,
-    }))
+  const loadQuestions = useQuizStore((state) => state.loadQuestions)
+
+  const handleAction = async (formData: FormData) => {
+    const data = await createQuiz(formData)
+    if (data.status === "error") {
+      playAudio("/sounds/kick.wav")
+      toast({
+        variant: "warning",
+        title: "Oops! Something went wrong",
+        description: data.message,
+      })
+      return
+    }
+    if (data.status === "success") {
+      playAudio("/sounds/coin.wav")
+      loadQuestions(data.data)
+      toast({
+        variant: "success",
+        title: "Success! Questions loaded",
+        description: data.message,
+      })
+    }
   }
-  const handleSliderChange = (field: string) => (value: number[]) => {
-    const stringValue = value[0]?.toString()
-    setSettings((prev) => ({
-      ...prev,
-      [field]: stringValue,
-    }))
-  }
-
-  const isSettingsComplete =
-    settings.amount !== undefined &&
-    settings.category !== undefined &&
-    settings.difficulty !== undefined &&
-    settings.type !== undefined
-  const isResultsComplete = results.length === 0
 
   return (
     <Sheet>
       <SheetTrigger className="group animate-fade-left animate-normal animate-once animate-ease-out">
         <Icon icon={Settings} />
       </SheetTrigger>
-      <SheetContent className="between flex-col">
-        <Header />
-        <Body
-          handleValueChange={handleValueChange}
-          handleSliderChange={handleSliderChange}
-          isSettingsComplete={isSettingsComplete}
-          isResultsComplete={isResultsComplete}
-          categories={categories}
-          settings={settings}
-          results={results}
-        />
-        <Footer
-          isSettingsComplete={isSettingsComplete}
-          isResultsComplete={isResultsComplete}
-          settings={settings}
-          results={results}
-        />
+      <SheetContent>
+        <form
+          ref={ref}
+          action={handleAction}
+          className="between h-full flex-col"
+        >
+          <Header />
+          <Body categories={categories} />
+          <Footer />
+        </form>
       </SheetContent>
     </Sheet>
   )

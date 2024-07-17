@@ -1,21 +1,13 @@
 "use client"
 
-import Message from "@/components/message"
 import SelectWrapper from "@/components/wrapper/select"
 import SliderWrapper from "@/components/wrapper/slider"
-import { Category, Controls, QuizResult } from "@/lib/definitions"
-import { AnimatePresence } from "framer-motion"
-import { Check, HelpCircle } from "lucide-react"
+import { Category } from "@/lib/definitions"
+import qs from "query-string"
+import { useState } from "react"
 
 type Props = {
-  results: QuizResult[]
   categories: Category[]
-  controls?: Controls
-  settings: Controls
-  isSettingsComplete: boolean
-  isResultsComplete: boolean
-  handleSliderChange: (field: string) => (value: number[]) => void
-  handleValueChange: (field: string) => (value: string) => void
 }
 
 const difficultyOptions = [
@@ -29,29 +21,49 @@ const typeOptions = [
   { value: "boolean", label: "True / False" },
 ]
 
-export default function Body({
-  results,
-  categories,
-  settings,
-  isSettingsComplete,
-  isResultsComplete,
-  handleSliderChange,
-  handleValueChange,
-}: Props) {
+const defaultControls = {
+  amount: "0",
+  category: "",
+  difficulty: "",
+  type: "",
+}
+
+export default function Body({ categories }: Props) {
+  const [settings, setSettings] = useState({
+    ...defaultControls,
+  })
+
+  const handleValueChange = (field: string) => (value: string) => {
+    setSettings((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
+  }
+
+  const handleSliderChange = (field: string) => (value: number[]) => {
+    const stringValue = value[0]?.toString()
+    setSettings((prev) => ({
+      ...prev,
+      [field]: stringValue,
+    }))
+  }
+
+  const categoryOptions = categories.map(({ id, name }) => ({
+    value: id.toString(),
+    label: name,
+  }))
+
   return (
-    <form className="mt-2 flex h-full w-full flex-col gap-2 text-sm">
+    <section className="mt-2 flex h-full w-full flex-col gap-2 text-sm">
       <SliderWrapper
         label="Amount"
-        value={settings.amount ? parseInt(settings.amount) : 0}
+        value={parseInt(settings.amount)}
         onValueChange={handleSliderChange("amount")}
       />
       <SelectWrapper
         value={settings.category}
         onValueChange={handleValueChange("category")}
-        options={categories.map(({ id, name }) => ({
-          value: id.toString(),
-          label: name,
-        }))}
+        options={categoryOptions}
         placeholder="Select a category"
       />
       <SelectWrapper
@@ -61,38 +73,12 @@ export default function Body({
         placeholder="Select difficulty"
       />
       <SelectWrapper
-        value={settings.type}
+        value={settings.type || ""}
         onValueChange={handleValueChange("type")}
         options={typeOptions}
         placeholder="Select question type"
       />
-      <div className="mt-4 flex flex-col gap-2">
-        <AnimatePresence>
-          {!isSettingsComplete && (
-            <Message
-              key="incomplete"
-              icon={HelpCircle}
-              title="Complete the above fields to continue"
-              type="warning"
-            />
-          )}
-          {isResultsComplete ? (
-            <Message
-              key="no-results"
-              icon={HelpCircle}
-              title="Search for available categories"
-              type="warning"
-            />
-          ) : (
-            <Message
-              key="results-found"
-              icon={Check}
-              title={`Category with ${results.length} questions ready`}
-              type="success"
-            />
-          )}
-        </AnimatePresence>
-      </div>
-    </form>
+      <input type="hidden" name="settings" value={qs.stringify(settings)} />
+    </section>
   )
 }

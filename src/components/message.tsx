@@ -12,21 +12,20 @@ export default function Message({ icon: Icon, title, type }: MessageProps) {
   return (
     <motion.div
       layout
-      className={cn(
-        "center h-6 w-fit gap-1 rounded-md border px-2 text-[11px] font-normal",
-        {
-          "bg-success/5 border-success text-success": type === "success",
-          "border-destructive bg-destructive/5 text-destructive":
-            type === "error",
-          "border-warning bg-warning/5 text-warning": type === "warning",
-        },
-      )}
+      className="center h-6 w-fit gap-1 rounded-md border px-2 text-[11px] font-normal"
       initial={{ opacity: 0, scale: 0.8, y: -5 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.8, x: 5 }}
     >
-      <Icon size={13} />
-      <span>{title}</span>
+      <Icon
+        size={13}
+        className={cn({
+          "text-success": type === "success",
+          "text-destructive": type === "error",
+          "text-warning": type === "warning",
+        })}
+      />
+      <span className="opacity-90">{title}</span>
     </motion.div>
   )
 }

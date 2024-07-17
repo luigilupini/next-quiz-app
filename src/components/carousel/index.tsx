@@ -1,12 +1,17 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
 import useQuizStore from "@/state/zustand/quiz-store"
-import { AnimatePresence, MotionConfig, motion } from "framer-motion"
+import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
-import useMeasure from "react-use-measure"
-import { renderQuestionnaire } from "./configuration"
-import { Complete, Idle, Progress, Review } from "./controls"
+
+import MeasureWrapper from "@/components/wrapper/measure"
+import OpacityWrapper from "@/components/wrapper/opacity"
+
+import Controls from "./controls"
+import CompleteSlot from "./slot/complete"
+import EmptySlot from "./slot/empty"
+import QuestionSlot from "./slot/questions"
+import ReviewSlot from "./slot/review"
 
 const variants = {
   initial: (direction: number) => ({ x: `${110 * direction}%`, opacity: 0 }),
@@ -15,75 +20,37 @@ const variants = {
 }
 
 export default function Carousel() {
-  const {
-    questions,
-    currentQuestionIndex,
-    score,
-    status,
-    answerQuestion,
-    resetQuiz,
-  } = useQuizStore()
+  const [direction, setDirection] = useState<number>(0)
 
-  const [direction, toggle] = useState<number>(0)
-  const [ref, { height }] = useMeasure()
+  const { currentQuestionIndex, status } = useQuizStore((state) => ({
+    currentQuestionIndex: state.currentQuestionIndex,
+    status: state.status,
+  }))
 
-  const currentQuestion = questions[currentQuestionIndex]
-  const handleAnswer = (answer: string) => answerQuestion(answer)
-  const answers = currentQuestion?.incorrect_answers
-    .concat(currentQuestion.correct_answer)
-    .sort()
-
-  const state = useQuizStore()
-  console.log(state.questions)
-  console.log(state.status)
+  if (status === "idle") return <EmptySlot />
+  if (status === "review") return <ReviewSlot />
+  if (status === "complete") return <CompleteSlot />
 
   return (
-    <Card>
-      <MotionConfig transition={{ type: "spring", duration: 0.5, bounce: 0 }}>
-        <motion.div
-          animate={{ height }}
-          className="relative w-[480px] overflow-hidden"
-        >
-          <div className="p-6" ref={ref}>
-            <AnimatePresence
-              mode="popLayout"
-              initial={false}
-              custom={direction}
-            >
-              <motion.div
-                key={currentQuestionIndex}
-                variants={variants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                custom={direction}
-              >
-                {renderQuestionnaire({
-                  status,
-                  questions,
-                  currentQuestionIndex,
-                  handleAnswer,
-                  answers,
-                  score,
-                  resetQuiz,
-                })}
-              </motion.div>
-            </AnimatePresence>
+    <OpacityWrapper>
+      <MeasureWrapper>
+        <AnimatePresence mode="popLayout" custom={direction} initial={false}>
+          <motion.div
+            key={currentQuestionIndex}
+            variants={variants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            custom={direction}
+          >
+            <QuestionSlot />
+          </motion.div>
+        </AnimatePresence>
 
-            <motion.div layout className="between mt-9">
-              {status === "idle" && <Idle toggle={toggle} />}
-              {status === "progress" && (
-                <Progress
-                  questionNumber={currentQuestionIndex}
-                  toggle={toggle}
-                />
-              )}
-              {status === "review" && <Review toggle={toggle} />}
-              {status === "complete" && <Complete />}
-            </motion.div>
-          </div>
+        <motion.div layout className="between mt-9">
+          <Controls setDirection={setDirection} />
         </motion.div>
-      </MotionConfig>
-    </Card>
+      </MeasureWrapper>
+    </OpacityWrapper>
   )
 }
