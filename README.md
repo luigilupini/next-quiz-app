@@ -4,9 +4,9 @@
 - Written in React with [TypeScript](https://www.typescriptlang.org/)
 - Responsive, Mobile Friendly, Fluid UI
 - Features multiple question types and timed quizzes
-- Deployment: [Vercel](https://next-quiz-app.vercel.app/)
+- Deployment: [Vercel](https://next-quiz-app-demo.vercel.app/)
 
-![alt text](./capture.png)
+![alt text](./docs/capture-walk-1.png)
 
 ## Summary
 
@@ -112,16 +112,25 @@ Route (app)                              Size     First Load JS
   └ other shared chunks (total)          1.96 kB
 
 
-○  (Static)  prerendered as static content
+○  (Static)  pre-rendered as static content
 ```
 
 ## Short Walk Through
 
 - Step 1
-![alt text](./capture-walk-project-1.png)
+![alt text](./docs/capture-walk-1.png)
 
 - Step 2
-![alt text](./capture-walk-project-2.png)
+![alt text](./docs/capture-walk-2.png)
 
 - Step 3
-![alt text](./capture-walk-project-3.png)
+![alt text](./docs/capture-walk-3.png)
+
+- Step 4
+![alt text](./docs/capture-walk-4.png)
+
+- Step 5
+![alt text](./docs/capture-walk-5.png)
+
+- Step 6
+![alt text](./docs/capture-walk-6.png)
