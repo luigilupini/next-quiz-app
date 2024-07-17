@@ -1,4 +1,4 @@
-# Nextjs Artwork
+# Nextjs Quiz App
 
 - A dynamic quiz application built with Next.js
 - Written in React with [TypeScript](https://www.typescriptlang.org/)
