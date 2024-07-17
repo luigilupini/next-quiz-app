@@ -12,10 +12,10 @@ export default function EmptySlot({ className }: { className?: string }) {
       exit={{ opacity: 0, scale: 0.5 }}
       className={cn("center mt-6 size-full flex-col gap-1", className)}
     >
-      <Bird size={74} />
+      <Bird size={74} className="opacity-50" style={{ strokeWidth: 1 }} />
       <p className="center flex-col">
-        <span className="font-medium opacity-75">No active game found</span>
-        <span className="text-center text-sm opacity-55">
+        <span className="font-medium">No active game found</span>
+        <span className="text-center text-sm opacity-70">
           Please try again with different settings
         </span>
       </p>

@@ -15,7 +15,6 @@ export default function SliderWrapper({ value, label, onValueChange }: Props) {
           {value || 0}
         </span>
         <Slider
-          // name={formId}
           defaultValue={[0]}
           min={1}
           max={20}

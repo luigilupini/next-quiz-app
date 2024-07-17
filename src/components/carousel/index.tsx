@@ -7,6 +7,7 @@ import { useState } from "react"
 import MeasureWrapper from "@/components/wrapper/measure"
 import OpacityWrapper from "@/components/wrapper/opacity"
 
+import useQuizTimer from "@/lib/hooks/use-quiz-timer"
 import Controls from "./controls"
 import CompleteSlot from "./slot/complete"
 import EmptySlot from "./slot/empty"
@@ -26,6 +27,8 @@ export default function Carousel() {
     currentQuestionIndex: state.currentQuestionIndex,
     status: state.status,
   }))
+
+  useQuizTimer()
 
   if (status === "idle") return <EmptySlot />
   if (status === "review") return <ReviewSlot />

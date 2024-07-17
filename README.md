@@ -1,22 +1,22 @@
 # Nextjs Artwork
 
-- A collection of artwork served by Next.js
+- A dynamic quiz application built with Next.js
 - Written in React with [TypeScript](https://www.typescriptlang.org/)
-- Responsive, Mobile Friendly, Completely Fluid UI
-- Endpoint: Art Institute of Chicago API `/api/artworks`
-- Deployment: [Vercel](https://next-artwork.vercel.app/)
+- Responsive, Mobile Friendly, Fluid UI
+- Features multiple question types and timed quizzes
+- Deployment: [Vercel](https://next-quiz-app.vercel.app/)
 
 ![alt text](./capture.png)
 
 ## Summary
 
-Return a list of artworks that match your search criteria by using the search bar. Additionally in the header you find filters for public domain and on view fields. If you sensitive to strong bright colors, I have provided a theme switch for you that toggles between light and dark mode. The palette choice is inspired by Github's default dimmed theme.
+Test your knowledge with our engaging quiz application! Navigate through questions using the controls at the bottom of each card.
 
-You can move between results using controls in the bottom of the page with the use of Previous and Next buttons.
+If you sensitive to strong bright colors, I have provided a theme switch for you that toggles between light and dark mode. The palette choice is inspired by Github's default dimmed theme.
 
-Artwork will be listed in the body of the page and is responsive to viewport changes. Any content overflow is scrollable. Clicking a list item will animate toward the center of the grid body. A user can bookmark artworks in the local storage. Framer motion takes care of the transformations. Matching layout elements mount/unmount toward newer sections within our React tree using layout identifiers. I have blurred just the title to hide off a bit of that imperfection in position change.
+Each question appears in a smooth animated layout, ensuring a visually appealing experience. Your progress is saved, and you can review your answers before submitting. Quizzes are stored locally for easy access persisted data.
 
-Shared layout does a great illusion of our list. You may think you have one element moving around but that is not the case.
+Framer motion takes care of the transformations. Matching layout elements mount/unmount toward newer sections within our React tree using layout identifiers. Shared layout does a great illusion of our list. You may think you have one element moving around but that is not the case.
 
 1. We replace (unmount) the older art card
 2. And (mount) a new item where the older card item was placed
@@ -24,48 +24,35 @@ Shared layout does a great illusion of our list. You may think you have one elem
 
 Key takeaway: `layoutId` is very powerful and it allows you to become a bit creative with CSS transforms.
 
-More information about an artwork can be viewed within that same overlay. I wanted the user to keep within the same section of the UI, being the Overlay and active card. I feel this is the best way to keep them away from other unwanted navigation.
-
-Bookmarked artworks are displayed separately and can be found in a sidebar that is active from the header. Once the sheet (sidebar) is open, users can pop-off any unwanted items from the list. Its layout position changes are managed by a layout component.
-
 ## Functional Requirements
-- As a user, I should be able to search artworks
-  - The search has a debounce time of `350ms`
-  - The search component has a clear button
-  - Queries make use of a Next.js API route `server/api.ts`
-  - The page makes use of `searchParams`
-  - Components: `<Search />` under `components/common`
-- Pagination is used to navigate between pages
-  - All pagination walks through the same API route `server/api.ts`
-  - Animation occurs on page change with a `<MorphText />` component
-  - Components: `<Pagination />` under `components`
-- Artworks can be filtered by:
-  - Public Domain and On View can toggle
-  - The buttons make use of `useSearchParams`
-  - These fields filter into the `server/api.ts` function
-  - Components: `<Controls />` under `components`
-- User should be able to select an artwork from the fetched artworks and view details
-  - All artworks are presented from containing shared layout component
-  - Each artwork list item has a single component
-  - A selected `activeArt` artwork is presented in the overlay
-  - Components: `<SharedList />`, `<ArtCard />`, `<ArtOverlay />` under `components`
-- Selected artwork can be bookmarked in the local storage from the artwork details
-  - All bookmarks are stored in the local storage under `bookmarks`
-  - I am making use of a `useLocalStorage` hook
-  - Bookmarked artwork can be un-bookmarked
-  - Bookmarked artworks are presented separately in the sidebar component
-  - Components: `<BookmarkCart />`, `<Sidebar />` under `components`
+- As a user, I can start a quiz
+  - You can load a quiz with a specified number of questions
+  - A quiz timer will give a user 1 minute per question
+  - Actions with zod assist with server form validation under `server/api`
+  - Components: `<ConfigSheet />` under `components/settings`
+- Navigate through quiz questions
+  - Layout changes are smooth between previous and next questions
+  - A use measure hook ensures that the size change is dynamic
+  - Navigate through questions using Back and Next buttons
+  - Components: `<Carousel />` under `components/carousel`
+- Answering quiz questions
+  - Questions can be multiple choice or true/false
+  - A zustand store handles all the business logic and is persisted
+  - Components: `<useQuizStore />` under `state/zustand`
+- Review and submit quiz answers
+  - Users can review answers before submitting
+  - Score and detailed results are displayed by slots
+  - Components: `<Review />`, `<Complete />` under `components/carousel/slot`
 
 ## Technical requirements
 - App is based on Next.js ✅
 - All components have a clear type interface ✅
 - State and view of the app are separated ✅
-  - Manage local storage using hooks under `use-hooks-ts` 😬
-    - I am hoping that is not a problem 🙏
-  - Manage search queries via hooks under `lib/hooks` ✅
-  - Grid layout is using state management via Zustand ✅
+  - Manage local storage using `zustand/middleware` ✅
+  - Manage timer via a helpful hook under `lib/hooks` ✅
+  - Grid layout is using (server-side) state with zustand ✅
   - Theme management is using Provider ✅
-  - See state under `state/context` and `state/zustand` ✅
+  - See provider tree under `state/context` and `state/zustand` ✅
 - Static types are used to ensure soundness of the app ✅
   -  See definitions in `lib/definitions.ts` ✅
 - App has relevant tests
@@ -74,24 +61,13 @@ Bookmarked artworks are displayed separately and can be found in a sidebar that 
   - Outstanding testing for mocking API response 😬
 - Minimum required documentation is provided ✅
 - Source code is presented on GitHub ✅
-- Redux is not used ✅
-- No component is being used ✅
-
-## Bonus points
 - App is enhanced with supportive animations using Framer motion ✅
 - App uses persistence and cache management provided by Next.js ✅
--  App is published as a working demo on a public URL ✅
-
-## Geo finder function
-
-- The supported countries are Germany, France, The Netherlands, and Poland ✅
-- The function can be found under `server/geo-finder.ts` ✅
+- App is published as a working demo on a public URL ✅
 
 ## Outstanding (needed more time)
 - Additional testing using mock response data and insertion
-- Testing of geo-finder with cypress
-- I feel the objective maybe was to create my own storage context
-- The application can be broken down into smaller client chunks
+- Authentication to ensure session is managed within the application
 
 Regards, <br />
 Luigi Lupini <br />
@@ -116,7 +92,7 @@ Then run: `npm run cypress open` in the root folder of your project.
 ### Local Build Results
 
 ```bash
-next build
+$ next build
    ▲ Next.js 14.1.3
 
    Creating an optimized production build ...
@@ -128,16 +104,15 @@ next build
  ✓ Finalizing page optimization
 
 Route (app)                              Size     First Load JS
-┌ λ /                                    9.51 kB         146 kB
-└ ○ /_not-found                          882 B          85.3 kB
-+ First Load JS shared by all            84.4 kB
-  ├ chunks/69-6888cb0bb0ab02ba.js        29 kB
-  ├ chunks/fd9d1056-04dffe36a95c2f63.js  53.4 kB
-  └ other shared chunks (total)          1.99 kB
+┌ ○ /                                    46.6 kB         179 kB
+└ ○ /_not-found                          0 B                0 B
++ First Load JS shared by all            84.3 kB
+  ├ chunks/69-0abad9b0e8f68927.js        29 kB
+  ├ chunks/fd9d1056-95560a19744a4975.js  53.4 kB
+  └ other shared chunks (total)          1.96 kB
 
 
-○ (Static)   prerendered as static content
-λ  (Dynamic)  server-rendered on demand using Node.js
+○  (Static)  prerendered as static content
 ```
 
 ## Short Walk Through

@@ -68,12 +68,14 @@ type ContainerProps = PropsWithChildren<{
 
 const Container = ({ currentQuestion, question, children }: ContainerProps) => {
   return (
-    <div className="relative flex flex-col gap-3">
+    <div className="relative flex flex-col gap-1">
       <header className="center justify-start gap-2">
         <span className="text-lg font-medium">Question {currentQuestion}</span>
       </header>
-      <h1>{question}</h1>
-      <div className="center flex-col items-start gap-2">{children}</div>
+      <h1 className="text-[15px] opacity-75">{question}</h1>
+      <div className="center flex-col items-start gap-2 pt-4 text-sm">
+        {children}
+      </div>
     </div>
   )
 }

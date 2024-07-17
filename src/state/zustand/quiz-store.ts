@@ -16,6 +16,9 @@ type QuizState = {
   currentQuestionIndex: number
   score: number
   status: "idle" | "progress" | "review" | "complete"
+  gamesPlayed: number
+  totalScore: number
+  timeLeft: number
   loadQuestions: (questions: Question[]) => void
   answerQuestion: (answer: string) => void
   nextQuestion: () => void
@@ -23,19 +26,25 @@ type QuizState = {
   reviewAnswers: () => void
   submitQuiz: () => void
   resetQuiz: () => void
+  decrementTimer: () => void
+  deleteQuiz: () => void
 }
 
-const createQuizSlice: StateCreator<QuizState> = (set) => ({
+const createQuizSlice: StateCreator<QuizState> = (set, get) => ({
   questions: [],
   currentQuestionIndex: 0,
   score: 0,
   status: "idle",
+  gamesPlayed: 0,
+  totalScore: 0,
+  timeLeft: 0,
   loadQuestions: (questions) =>
     set({
-      questions,
+      questions: questions.map((q) => ({ ...q })),
       currentQuestionIndex: 0,
       score: 0,
       status: "progress",
+      timeLeft: questions.length * 60, // 1 minute per question
     }),
   answerQuestion: (answer: string) =>
     set((state) => {
@@ -93,14 +102,40 @@ const createQuizSlice: StateCreator<QuizState> = (set) => ({
       currentQuestionIndex: Math.max(state.currentQuestionIndex - 1, 0),
     })),
   reviewAnswers: () => set({ status: "review" }),
-  submitQuiz: () => set({ status: "complete" }),
+  submitQuiz: () =>
+    set((state) => ({
+      status: "complete",
+      gamesPlayed: state.gamesPlayed + 1,
+      totalScore: state.totalScore + state.score,
+    })),
   resetQuiz: () =>
     set({
       questions: [],
       currentQuestionIndex: 0,
       score: 0,
       status: "idle",
+      timeLeft: 0,
     }),
+  decrementTimer: () =>
+    set((state) => {
+      if (state.timeLeft <= 0 && state.status === "progress") {
+        return { status: "review" }
+      }
+      return {
+        timeLeft: state.timeLeft > 0 ? state.timeLeft - 1 : 0,
+      }
+    }),
+  deleteQuiz: () => {
+    localStorage.removeItem("quiz-storage")
+    set({
+      questions: [],
+      currentQuestionIndex: 0,
+      score: 0,
+      totalScore: 0,
+      gamesPlayed: 0,
+      status: "idle",
+    })
+  },
 })
 
 const useQuizStore = create(

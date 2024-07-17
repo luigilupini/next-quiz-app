@@ -50,7 +50,7 @@ function Review({ question, userAnswer }: ReviewProps) {
     >
       <h2>{question}</h2>
       <Badge className="center gap-1 rounded-md border px-2">
-        {displayUserAnswer}
+        {displayUserAnswer || "No answer"}
       </Badge>
     </div>
   )

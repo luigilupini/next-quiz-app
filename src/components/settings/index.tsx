@@ -12,9 +12,11 @@ import { createQuiz } from "@/server/api"
 import useQuizStore from "@/state/zustand/quiz-store"
 
 import { playAudio } from "@/lib/utils"
+
 import Body from "./body"
 import Footer from "./footer"
 import Header from "./header"
+import ActiveNote from "./note"
 
 type Props = {
   categories: Category[]
@@ -62,6 +64,7 @@ export default function ConfigSheet({ categories }: Props) {
         >
           <Header />
           <Body categories={categories} />
+          <ActiveNote />
           <Footer />
         </form>
       </SheetContent>
