@@ -126,7 +126,6 @@ const createQuizSlice: StateCreator<QuizState> = (set, get) => ({
       }
     }),
   deleteQuiz: () => {
-    localStorage.removeItem("quiz-storage")
     set({
       questions: [],
       currentQuestionIndex: 0,
@@ -134,7 +133,9 @@ const createQuizSlice: StateCreator<QuizState> = (set, get) => ({
       totalScore: 0,
       gamesPlayed: 0,
       status: "idle",
+      timeLeft: 0,
     })
+    localStorage.removeItem("quiz-storage")
   },
 })
 

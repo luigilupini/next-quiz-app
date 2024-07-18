@@ -37,12 +37,14 @@ export default function Delete() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-md" data-id="delete-history-content">
         <DialogHeader>
-          <DialogTitle>Delete</DialogTitle>
-          <DialogDescription className="text-sm">
-            You are about to delete all history of {gamesPlayed} games played.
+          <DialogTitle>Confirm Deletion</DialogTitle>
+          <DialogDescription className="text-[13px] opacity-80">
+            This will remove the history of{" "}
+            <span className="font-medium text-primary">{gamesPlayed}</span>{" "}
+            played games
           </DialogDescription>
         </DialogHeader>
-        <section className="center gap-2">
+        <section className="center">
           <div className="flex-1 rounded-md border border-border/50 px-2 py-[2px] transition-all duration-300 hover:border-primary/100">
             <label
               htmlFor="confirm-deletion"
@@ -61,9 +63,16 @@ export default function Delete() {
                 data-id="delete-history-confirm"
                 onCheckedChange={() => setChecked(!checked)}
               />
-              Please confirm the deletion
+              Confirm the deletion of your records by checking this box
             </label>
           </div>
+        </section>
+        <DialogFooter className="ml-auto mt-1 sm:justify-start">
+          <DialogClose asChild data-id="close-delete-history-button">
+            <Button type="button" variant="outline">
+              Close
+            </Button>
+          </DialogClose>
           <Button
             type="button"
             variant="default"
@@ -75,14 +84,7 @@ export default function Delete() {
           >
             Delete
           </Button>
-          <DialogFooter className="sm:justify-start">
-            <DialogClose asChild data-id="close-delete-history-button">
-              <Button type="button" variant="outline">
-                Close
-              </Button>
-            </DialogClose>
-          </DialogFooter>
-        </section>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   )
