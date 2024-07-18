@@ -87,8 +87,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 For cypress testing e2e navigation and common components that all reside under `cypress` folder within the project root. Please ensure the local server is running first for the little e2e demo.
 
-![alt text](./capture-cypress-1.png)
-![alt text](./capture-cypress-2.png)
+![alt text](./docs/capture-cypress-1.png)
+![alt text](./docs/capture-cypress-2.png)
 
 Then run: `npm run cypress open` in the root folder of your project.
 
