@@ -16,11 +16,13 @@ If you sensitive to strong bright colors, I have provided a theme switch for you
 
 Each question appears in a smooth animated layout, ensuring a visually appealing experience. Your progress is saved, and you can review your answers before submitting. Quizzes are stored locally for easy access persisted data.
 
-Framer motion takes care of the transformations. Matching layout elements mount/unmount toward newer sections within our React tree using layout identifiers. Shared layout does a great illusion of our list. You may think you have one element moving around but that is not the case.
+Framer motion takes care of the transformations.
 
-1. We replace (unmount) the older art card
+Matching layout elements mount/unmount toward newer sections within our React tree using layout identifiers. Shared layout does a great illusion of our changing question within the quiz. You may think you have one element moving around but that is not the case.
+
+1. We replace (unmount) the older card
 2. And (mount) a new item where the older card item was placed
-3. And then animate the newer item toward its now newer position
+3. Then animate the newer item toward its now newer position
 
 Key takeaway: `layoutId` is very powerful and it allows you to become a bit creative with CSS transforms.
 
@@ -85,15 +87,18 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 For cypress testing e2e navigation and common components that all reside under `cypress` folder within the project root. Please ensure the local server is running first for the little e2e demo.
 
-![alt text](./capture-cypress.png)
+![alt text](./capture-cypress-1.png)
+![alt text](./capture-cypress-2.png)
 
 Then run: `npm run cypress open` in the root folder of your project.
 
 ### Local Build Results
 
 ```bash
-$ next build
-   ▲ Next.js 14.1.3
+> next-quiz-app@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.5
 
    Creating an optimized production build ...
  ✓ Compiled successfully
@@ -104,15 +109,15 @@ $ next build
  ✓ Finalizing page optimization
 
 Route (app)                              Size     First Load JS
-┌ ○ /                                    46.6 kB         179 kB
-└ ○ /_not-found                          0 B                0 B
-+ First Load JS shared by all            84.3 kB
-  ├ chunks/69-0abad9b0e8f68927.js        29 kB
-  ├ chunks/fd9d1056-95560a19744a4975.js  53.4 kB
-  └ other shared chunks (total)          1.96 kB
+┌ ○ /                                    46.7 kB         183 kB
+└ ○ /_not-found                          137 B          87.2 kB
++ First Load JS shared by all            87.1 kB
+  ├ chunks/23-40c3dc63549553d0.js        31.5 kB
+  ├ chunks/fd9d1056-2119ad165b42c72c.js  53.6 kB
+  └ other shared chunks (total)          1.91 kB
 
 
-○  (Static)  pre-rendered as static content
+○  (Static)  prerendered as static content
 ```
 
 ## Short Walk Through

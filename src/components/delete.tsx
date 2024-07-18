@@ -31,11 +31,11 @@ export default function Delete() {
   return (
     <Dialog onOpenChange={(isOpen) => !isOpen && handleClose()}>
       <DialogTrigger asChild>
-        <button>
+        <button data-id="delete-history-button">
           <Icon icon={Trash} />
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" data-id="delete-history-content">
         <DialogHeader>
           <DialogTitle>Delete</DialogTitle>
           <DialogDescription className="text-sm">
@@ -58,6 +58,7 @@ export default function Delete() {
                 className={cn("border-foreground", {
                   "border-primary": checked,
                 })}
+                data-id="delete-history-confirm"
                 onCheckedChange={() => setChecked(!checked)}
               />
               Please confirm the deletion
@@ -75,7 +76,7 @@ export default function Delete() {
             Delete
           </Button>
           <DialogFooter className="sm:justify-start">
-            <DialogClose asChild>
+            <DialogClose asChild data-id="close-delete-history-button">
               <Button type="button" variant="outline">
                 Close
               </Button>

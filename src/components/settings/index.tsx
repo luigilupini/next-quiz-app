@@ -53,7 +53,10 @@ export default function ConfigSheet({ categories }: Props) {
 
   return (
     <Sheet>
-      <SheetTrigger className="group animate-fade-left animate-normal animate-once animate-ease-out">
+      <SheetTrigger
+        className="group animate-fade-left animate-normal animate-once animate-ease-out"
+        data-id="open-sidebar-button"
+      >
         <Icon icon={Settings} />
       </SheetTrigger>
       <SheetContent>

@@ -54,7 +54,10 @@ export default function Body({ categories }: Props) {
   }))
 
   return (
-    <section className="mt-2 flex h-full w-full flex-col gap-2 text-sm">
+    <section
+      className="mt-2 flex h-full w-full flex-col gap-2 text-sm"
+      data-id="open-sidebar-content"
+    >
       <SliderWrapper
         label="Amount"
         value={parseInt(settings.amount)}
